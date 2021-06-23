@@ -14,13 +14,12 @@ services:
       # Hasura will start the database provided in the below env and will also use the same database to store de metadata catalogue.
       # https://hasura.io/docs/latest/graphql/core/deployment/graphql-engine-flags/config-examples.html#different-scenarios
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:primarypassword@db-primary:5432/postgres
+      # Tenant 1 Database
+      #TENANT_1_DATABASE_URL: postgres://postgres:tenant1password@db-tenant-1:5432/postgres
       HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
       HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
-      #HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
 
-  # Primary DB - stores hasura metadata catalogue
-  # Has schema for the stage environment
   db-primary:
     container_name: poc-hasura-multi-tenancy-primary-db
     image: postgres:12
@@ -32,19 +31,19 @@ services:
     environment:
       POSTGRES_PASSWORD: primarypassword
 
-  db-tenant-1:
-    container_name: poc-hasura-multi-tenancy-tenant-1-db
-    image: postgres:12
-    restart: always
-    ports: 
-      - "5433:5432"
-    volumes:
-      - db_tenant_1_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_PASSWORD: tenant1password
+  #db-tenant-1:
+  #  container_name: poc-hasura-multi-tenancy-tenant-1-db
+  #  image: postgres:12
+  #  restart: always
+  #  ports: 
+  #    - "5433:5432"
+  #  volumes:
+  #    - db_tenant_1_data:/var/lib/postgresql/data
+  #  environment:
+  #    POSTGRES_PASSWORD: tenant1password
 
 
 volumes:
   db_primary_data:
-  db_tenant_1_data:
+  #db_tenant_1_data:
 
